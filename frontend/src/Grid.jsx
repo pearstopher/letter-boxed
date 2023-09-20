@@ -3,9 +3,11 @@ import React, { useState, useRef } from 'react';
 
 export const Grid = () => {
     return <div className="grid-container">
-        {[...Array(25)].map((_, index) => (
-            <div key={index} className="grid-item" id={"grid-item-" + index}></div>
+        {[...Array(12)].map((_, index) => (
+            <div key={index} className="grid-item" id={"grid-item-" + (index + 1)}></div>
         ))}
+        <div key={0} id={"middle"}></div>
+
     </div>;
 }
 
@@ -26,6 +28,9 @@ export const TextBoxes = () => {
 
             if (index < 4) {
                 inputRefs.current[index + 1].focus();
+            }
+            else {
+                inputRefs.current[0].focus();
             }
         }
     };
