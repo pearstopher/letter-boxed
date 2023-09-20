@@ -21,7 +21,7 @@ export const Grid = forwardRef(function Grid(props, ref) {
 })
 
 export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
-    const [inputs, setInputs] = useState(Array(5).fill(''))
+    const [inputs, setInputs] = useState(Array(12).fill(''))
     const inputRefs = useRef([])
 
     const handleChange = (index, value) => {
@@ -35,7 +35,7 @@ export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
             })
 
             if (value !== '') {
-                if (index < 4) {
+                if (index < 11) {
                     inputRefs.current[index + 1].focus()
                 } else {
                     inputRefs.current[0].focus()
@@ -54,11 +54,10 @@ export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
 
     useEffect(() => {
         // attach the boxes to the grids
-        ref.current[0].appendChild(inputRefs.current[0])
-        ref.current[1].appendChild(inputRefs.current[1])
-        ref.current[2].appendChild(inputRefs.current[2])
-        ref.current[3].appendChild(inputRefs.current[3])
-        ref.current[4].appendChild(inputRefs.current[4])
+        for (let i = 0; i < 12; i++) {
+            ref.current[i].appendChild(inputRefs.current[i])
+        }
+        inputRefs.current[0].focus()
     }, []) // <-- empty array means 'run once'
 
     return (
