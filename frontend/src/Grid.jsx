@@ -21,23 +21,25 @@ export const Grid = forwardRef(function Grid(props, ref) {
 })
 
 export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
-    const [inputs, setInputs] = useState(Array(5).fill('0'))
+    const [inputs, setInputs] = useState(Array(5).fill(''))
     const inputRefs = useRef([])
 
     const handleChange = (index, value) => {
         console.log({ index, value })
         console.log(inputRefs)
-        if (value.match(/[a-zA-Z]/)) {
+        if (value.match(/[a-zA-Z]/) || value === '') {
             setInputs((prevInputs) => {
                 const newInputs = [...prevInputs]
                 newInputs[index] = value.toUpperCase()
                 return newInputs
             })
 
-            if (index < 4) {
-                inputRefs.current[index + 1].focus()
-            } else {
-                inputRefs.current[0].focus()
+            if (value !== '') {
+                if (index < 4) {
+                    inputRefs.current[index + 1].focus()
+                } else {
+                    inputRefs.current[0].focus()
+                }
             }
         }
     }
@@ -45,7 +47,7 @@ export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
         console.log({ index, value })
         setInputs((prevInputs) => {
             const newInputs = [...prevInputs]
-            newInputs[index] = ''
+            //newInputs[index] = ''
             return newInputs
         })
     }
