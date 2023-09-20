@@ -10,6 +10,9 @@ dependencies:
   '@testing-library/user-event':
     specifier: ^13.5.0
     version: 13.5.0(@testing-library/dom@9.3.3)
+  eslint-config-react-app:
+    specifier: ^7.0.1
+    version: 7.0.1(@babel/plugin-syntax-flow@7.22.5)(@babel/plugin-transform-react-jsx@7.22.15)(eslint@8.49.0)(jest@27.5.1)(typescript@5.2.2)
   less-watch-compiler:
     specifier: ^1.16.3
     version: 1.16.3
