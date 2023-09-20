@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react'
+import React, { forwardRef, useEffect, useState, useRef } from 'react'
 
-export const Grid = () => {
+export const Grid = forwardRef(function Grid(props, ref) {
     const gridRefs = useRef([])
 
     return (
@@ -14,11 +14,13 @@ export const Grid = () => {
                 ></div>
             ))}
             <div key={0} id={'middle'}></div>
+
+            <TextBoxes ref={gridRefs} />
         </div>
     )
-}
+})
 
-export const TextBoxes = () => {
+export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
     const [inputs, setInputs] = useState(Array(5).fill('0'))
     const inputRefs = useRef([])
 
@@ -48,6 +50,15 @@ export const TextBoxes = () => {
         })
     }
 
+    useEffect(() => {
+        // attach the boxes to the grids
+        ref.current[0].appendChild(inputRefs.current[0])
+        ref.current[1].appendChild(inputRefs.current[1])
+        ref.current[2].appendChild(inputRefs.current[2])
+        ref.current[3].appendChild(inputRefs.current[3])
+        ref.current[4].appendChild(inputRefs.current[4])
+    }, []) // <-- empty array means 'run once'
+
     return (
         <div className="text-container">
             {inputs.map((value, index) => (
@@ -66,4 +77,4 @@ export const TextBoxes = () => {
             ))}
         </div>
     )
-}
+})
