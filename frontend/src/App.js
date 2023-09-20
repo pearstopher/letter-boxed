@@ -1,16 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
+import {Grid, TextBoxes} from './Grid.jsx';
 
 function App() {
   return (
       <div className="app-container">
-          <div className="grid-container">
-              {[...Array(25)].map((_, index) => (
-                  <div key={index} className="grid-item"></div>
-              ))}
-          </div>
+          <Grid />
+          <TextBoxes />
       </div>
   );
 }
+
+
 
 export default App;
