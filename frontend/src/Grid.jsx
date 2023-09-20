@@ -1,52 +1,54 @@
-import React, { useState, useRef } from 'react';
-
+import React, { useState, useRef } from 'react'
 
 export const Grid = () => {
-    return <div className="grid-container">
-        {[...Array(12)].map((_, index) => (
-            <div key={index} className="grid-item" id={"grid-item-" + (index + 1)}></div>
-        ))}
-        <div key={0} id={"middle"}></div>
+    const gridRefs = useRef([])
 
-    </div>;
+    return (
+        <div className="grid-container">
+            {[...Array(12)].map((_, index) => (
+                <div
+                    key={index}
+                    className="grid-item"
+                    id={'grid-item-' + (index + 1)}
+                    ref={(el) => (gridRefs.current[index] = el)}
+                ></div>
+            ))}
+            <div key={0} id={'middle'}></div>
+        </div>
+    )
 }
 
-
 export const TextBoxes = () => {
-    const [inputs, setInputs] = useState(Array(5).fill('0'));
-    const inputRefs = useRef( []);
+    const [inputs, setInputs] = useState(Array(5).fill('0'))
+    const inputRefs = useRef([])
 
     const handleChange = (index, value) => {
-        console.log({index, value});
+        console.log({ index, value })
         console.log(inputRefs)
         if (value.match(/[a-zA-Z]/)) {
-            setInputs(prevInputs => {
-                const newInputs = [...prevInputs];
-                newInputs[index] = value.toUpperCase();
-                return newInputs;
-            });
+            setInputs((prevInputs) => {
+                const newInputs = [...prevInputs]
+                newInputs[index] = value.toUpperCase()
+                return newInputs
+            })
 
             if (index < 4) {
-                inputRefs.current[index + 1].focus();
-            }
-            else {
-                inputRefs.current[0].focus();
+                inputRefs.current[index + 1].focus()
+            } else {
+                inputRefs.current[0].focus()
             }
         }
-    };
+    }
     const handleFocus = (index, value) => {
-        console.log({index, value});
-        setInputs(prevInputs => {
-            const newInputs = [...prevInputs];
-            newInputs[index] = "";
-            return newInputs;
-        });
-
-
+        console.log({ index, value })
+        setInputs((prevInputs) => {
+            const newInputs = [...prevInputs]
+            newInputs[index] = ''
+            return newInputs
+        })
     }
 
-
-        return (
+    return (
         <div className="text-container">
             {inputs.map((value, index) => (
                 <input
@@ -59,9 +61,9 @@ export const TextBoxes = () => {
                     onFocus={(e) => handleFocus(index, e.target.value)}
                     //ref={inputRefs[index]}
                     //ref={(element) => inputRefs.current.push(element)}
-                    ref={el => inputRefs.current[index] = el}
+                    ref={(el) => (inputRefs.current[index] = el)}
                 />
             ))}
         </div>
-    );
+    )
 }
