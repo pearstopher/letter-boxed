@@ -30,7 +30,6 @@ function useStateCallback(initialState) {
 export const Search = forwardRef(function Search(props, ref) {
     const [data, setData] = useStateCallback(null)
     const [error, setError] = useState(null)
-    const [resultMessage, setResultMessage] = useState([])
 
     const fetchData = async () => {
         try {
@@ -40,12 +39,22 @@ export const Search = forwardRef(function Search(props, ref) {
             )
             const result = await response.json()
             //const allWords = Object.keys(result)
-            setData(result, (s) => removeExtraWords(s))
             const newMessage =
                 'Loaded dictionary list... (' +
                 Object.keys(result).length +
                 ' items)'
-            setResultMessage((resultMessage) => [...resultMessage, newMessage])
+            //const resultMessage = [...props.resultMessage, newMessage]
+            let resultMessage = props.resultMessage
+            resultMessage[0] = newMessage
+            props.setResultMessage(resultMessage)
+
+            console.log(resultMessage)
+            console.log(props.resultMessage)
+
+            setData(result, (s) => removeExtraWords(s))
+
+            //let resultMessage = [].concat(props.resultMessage, [newMessage])
+            //props.setResultMessage((props.resultMessage) => [...props.resultMessage, newMessage])
         } catch (error) {
             setError(error)
         }
@@ -85,7 +94,12 @@ export const Search = forwardRef(function Search(props, ref) {
         console.log(goodWords)
         setData(goodWords, (s) => console.log(goodWords))
         const newMessage = 'Optimizing list... (' + goodWords.length + ' items)'
-        setResultMessage((resultMessage) => [...resultMessage, newMessage])
+        //let resultMessage = [...props.resultMessage, newMessage]
+        //let resultMessage = [].concat(props.resultMessage, [newMessage])
+        let resultMessage = props.resultMessage
+        resultMessage[1] = newMessage
+
+        props.setResultMessage(resultMessage)
     }
     const badWord = (word, badLetters, pairs) => {
         let bad = false
@@ -133,12 +147,12 @@ export const Search = forwardRef(function Search(props, ref) {
         } else {
             //setData(null)
         }
-    }, [props.doSearch])
+    }, [props.doSearch, props.resultMessage])
 
     return (
         <div>
             {data &&
-                resultMessage.map((message, index) => (
+                props.resultMessage.map((message, index) => (
                     <span key={index}>{message}</span>
                 ))}
             {error && <div>Error: {error.message}</div>}

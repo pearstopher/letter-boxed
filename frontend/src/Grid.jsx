@@ -2,7 +2,14 @@ import React, { forwardRef, useEffect, useState, useRef } from 'react'
 import { Search } from './Search.jsx'
 
 export const Grid = forwardRef(function Grid(
-    { inputs, setInputs, doSearch, setDoSearch },
+    {
+        inputs,
+        setInputs,
+        doSearch,
+        setDoSearch,
+        resultMessage,
+        setResultMessage,
+    },
     ref
 ) {
     const gridRefs = useRef([])
@@ -22,10 +29,16 @@ export const Grid = forwardRef(function Grid(
                     doSearch={doSearch}
                     setDoSearch={setDoSearch}
                     inputs={inputs}
+                    resultMessage={resultMessage}
+                    setResultMessage={setResultMessage}
                 />
             </div>
             <div key={13} id={'refresh'}>
-                <Refresh setInputs={setInputs} setDoSearch={setDoSearch} />
+                <Refresh
+                    setInputs={setInputs}
+                    setDoSearch={setDoSearch}
+                    setResultMessage={setResultMessage}
+                />
             </div>
 
             <TextBoxes inputs={inputs} setInputs={setInputs} ref={gridRefs} />
@@ -95,6 +108,7 @@ export const Refresh = forwardRef(function Refresh(props, ref) {
     const resetInputs = () => {
         props.setInputs(Array(12).fill(''))
         props.setDoSearch(false)
+        props.setResultMessage([])
     }
 
     return (

@@ -6,6 +6,7 @@ import { useState } from 'react'
 function App() {
     const [inputs, setInputs] = useState(Array(12).fill(''))
     const [doSearch, setDoSearch] = useState(false)
+    const [resultMessage, setResultMessage] = useState([])
 
     return (
         <div className="app-container">
@@ -14,8 +15,15 @@ function App() {
                 setInputs={setInputs}
                 doSearch={doSearch}
                 setDoSearch={setDoSearch}
+                resultMessage={resultMessage}
+                setResultMessage={setResultMessage}
             />
-            <Validate inputs={inputs} setDoSearch={setDoSearch} />
+            <Validate
+                inputs={inputs}
+                setDoSearch={setDoSearch}
+                resultMessage={resultMessage}
+                setResultMessage={setResultMessage}
+            />
         </div>
     )
 }
