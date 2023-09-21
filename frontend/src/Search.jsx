@@ -167,7 +167,7 @@ export const Search = forwardRef(function Search(props, ref) {
     const solve = () => {
         let messageIndex = 3
         for (let i = 0; i < data.length; i++) {
-            for (let j = i + 1; j < data.length; j++) {
+            for (let j = 0; j < data.length; j++) {
                 if (data[i].slice(-1) === data[j][0]) {
                     const letterArray = (data[i] + data[j]).split('')
                     const set = new Set(letterArray)
