@@ -53,20 +53,40 @@ export const Search = forwardRef(function Search(props, ref) {
     const removeExtraWords = (s) => {
         // make a list of the letters that can't be in any of the words
         const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
-        const lettersToRemove = props.inputs.map((letter) =>
+        const lettersOnBoard = props.inputs.map((letter) =>
             letter.toLowerCase()
         )
         const badLetters = alphabet.filter(
-            (letter) => !lettersToRemove.includes(letter)
+            (letter) => !lettersOnBoard.includes(letter)
         )
 
-        const goodWords = s.filter((word) => !badWord(word, badLetters))
+        // make a list of letters that are on the same side as other letters
+        function generatePairs(group) {
+            const pairs = []
+            for (let i = 0; i < group.length; i++) {
+                for (let j = i + 1; j < group.length; j++) {
+                    pairs.push(group[i] + group[j])
+                    pairs.push(group[j] + group[i])
+                }
+            }
+            console.log(pairs)
+            return pairs
+        }
+        const groups = [
+            lettersOnBoard.slice(0, 3),
+            lettersOnBoard.slice(3, 6),
+            lettersOnBoard.slice(6, 9),
+            lettersOnBoard.slice(9, 12),
+        ]
+        const pairs = groups.flatMap((group) => generatePairs(group))
+
+        const goodWords = s.filter((word) => !badWord(word, badLetters, pairs))
         console.log(goodWords)
         setData(goodWords, (s) => console.log(goodWords))
         const newMessage = 'Optimizing list... (' + goodWords.length + ' items)'
         setResultMessage((resultMessage) => [...resultMessage, newMessage])
     }
-    const badWord = (word, badLetters) => {
+    const badWord = (word, badLetters, pairs) => {
         let bad = false
 
         // reject any word with that contains a letter that's not on the board
@@ -89,10 +109,18 @@ export const Search = forwardRef(function Search(props, ref) {
             bad = true
         }
 
+        // reject any word that letters that are on the same side of the board
+        if (hasPairs(word, pairs)) {
+            bad = true
+        }
+
         return bad
     }
     function hasConsecutiveDuplicates(word) {
         return /(\w)\1/.test(word)
+    }
+    function hasPairs(word, pairs) {
+        return pairs.some((pair) => word.includes(pair))
     }
 
     useEffect(() => {
