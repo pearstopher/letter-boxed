@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useState, useRef } from 'react'
 
-export const Grid = forwardRef(function Grid(props, ref) {
+export const Grid = forwardRef(function Grid({ inputs, setInputs }, ref) {
     const gridRefs = useRef([])
 
     return (
@@ -15,20 +15,20 @@ export const Grid = forwardRef(function Grid(props, ref) {
             ))}
             <div key={0} id={'middle'}></div>
 
-            <TextBoxes ref={gridRefs} />
+            <TextBoxes inputs={inputs} setInputs={setInputs} ref={gridRefs} />
         </div>
     )
 })
 
 export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
-    const [inputs, setInputs] = useState(Array(12).fill(''))
+    //const [inputs, setInputs] = useState(Array(12).fill(''))
     const inputRefs = useRef([])
 
     const handleChange = (index, value) => {
         console.log({ index, value })
         console.log(inputRefs)
         if (value.match(/[a-zA-Z]/) || value === '') {
-            setInputs((prevInputs) => {
+            props.setInputs((prevInputs) => {
                 const newInputs = [...prevInputs]
                 newInputs[index] = value.toUpperCase()
                 return newInputs
@@ -45,7 +45,7 @@ export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
     }
     const handleFocus = (index, value) => {
         console.log({ index, value })
-        setInputs((prevInputs) => {
+        props.setInputs((prevInputs) => {
             const newInputs = [...prevInputs]
             //newInputs[index] = ''
             return newInputs
@@ -62,7 +62,7 @@ export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
 
     return (
         <div className="text-container">
-            {inputs.map((value, index) => (
+            {props.inputs.map((value, index) => (
                 <input
                     key={index}
                     type="text"
