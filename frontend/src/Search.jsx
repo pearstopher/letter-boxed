@@ -39,7 +39,7 @@ export const Search = forwardRef(function Search(props, ref) {
             )
             const result = await response.json()
             const allWords = Object.keys(result)
-            setData(allWords.slice(1, 1000), (s) => removeExtraWords(s))
+            setData(allWords, (s) => removeExtraWords(s))
             const newMessage =
                 'Loaded dictionary list... (' +
                 Object.keys(result).length +
@@ -52,9 +52,8 @@ export const Search = forwardRef(function Search(props, ref) {
 
     const removeExtraWords = (s) => {
         const goodWords = s.filter((word) => !badWord(word))
-        console.log(s)
-        return
-        setData(goodWords, (s) => console.log(s))
+        console.log(goodWords)
+        setData(goodWords, (s) => console.log(goodWords))
         const newMessage = 'Optimizing list... (' + goodWords.length + ' items)'
         setResultMessage((resultMessage) => [...resultMessage, newMessage])
     }
@@ -85,8 +84,6 @@ export const Search = forwardRef(function Search(props, ref) {
             bad = true
         }
 
-        console.log(badLetters)
-        console.log(lettersToRemove)
         return bad
     }
 
