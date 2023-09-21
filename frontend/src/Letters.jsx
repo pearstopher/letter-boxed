@@ -4,18 +4,32 @@ export const Letters = forwardRef(function Letters(props, ref) {
     const [letters, setLetters] = useState(
         Array('L', 'E', 'T', 'T', 'E', 'R', '-', 'B', 'O', 'X', 'E', 'D')
     )
-    const [valid, setValid] = useState(false)
+    const [noDuplicates, setNoDuplicates] = useState(true)
+    const [noBadCharacters, setNoBadCharacters] = useState(false)
+    const [message, setMessage] = useState(
+        'You can search once you fill in all the letters.'
+    )
 
-    function noDuplicates(arr) {
-        const set = new Set(arr)
-        return set.size === arr.length
+    function getNoDuplicates(arr) {
+        const ignoreBlanks = arr.filter((item) => item !== '')
+        const set = new Set(ignoreBlanks)
+        return set.size === ignoreBlanks.length
     }
-    function noBadCharacters(arr) {
+    function getNoBadCharacters(arr) {
         return !arr.includes('')
     }
 
     useEffect(() => {
-        setValid(noDuplicates(props.inputs) && noBadCharacters(props.inputs))
+        setNoDuplicates(getNoDuplicates(props.inputs))
+        setNoBadCharacters(getNoBadCharacters(props.inputs))
+
+        if (!noDuplicates) {
+            setMessage('You cant use the same letter more than once.')
+        } else if (!noBadCharacters) {
+            setMessage('You can search once you fill in all the letters.')
+        } else {
+            setMessage('')
+        }
     })
 
     return (
@@ -32,10 +46,13 @@ export const Letters = forwardRef(function Letters(props, ref) {
                 ))}
             </div>
             <div className="valid-container">
-                {valid ? (
-                    <span className="valid">These letters are valid.</span>
+                <span>{message}</span>
+            </div>
+            <div className="submit-container">
+                {noDuplicates && noBadCharacters ? (
+                    <span className={'button'}>Search</span>
                 ) : (
-                    <span className="invlid">These letters are not valid.</span>
+                    <span className={'button grey'}>Search</span>
                 )}
             </div>
         </div>

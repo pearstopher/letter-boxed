@@ -72,14 +72,30 @@
   padding: 25px;
   border: 0px;
 }
+.submit-wrapper {
+  display: flex;
+  flex-direction: column;
+}
 .letters-container {
   padding: 50px 0 25px;
   text-align: center;
 }
-.letters-container .grey {
+.grey {
   color: grey;
 }
 .valid-container {
-  padding: 25px 0 25px;
+  padding: 5px 0 25px;
   text-align: center;
+}
+.submit-container {
+  padding: 15px 0 25px;
+  text-align: center;
+}
+.button {
+  background: hotpink;
+  padding: 20px 30px;
+  text-align: center;
+  border: 4px solid deeppink;
+  border-radius: 10px;
+  cursor: pointer;
 }
