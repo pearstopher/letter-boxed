@@ -18,7 +18,7 @@ export const Grid = forwardRef(function Grid(
                 ></div>
             ))}
             <div key={0} id={'middle'}>
-                <Search doSearch={doSearch} />
+                <Search doSearch={doSearch} inputs={inputs} />
             </div>
             <div key={13} id={'refresh'}>
                 <Refresh setInputs={setInputs} setDoSearch={setDoSearch} />
@@ -77,7 +77,7 @@ export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
                     maxLength="1"
                     value={value}
                     onChange={(e) => handleChange(index, e.target.value)}
-                    onFocus={(e) => handleFocus(index, e.target.value)}
+                    // onFocus={(e) => handleFocus(index, e.target.value)}
                     //ref={inputRefs[index]}
                     //ref={(element) => inputRefs.current.push(element)}
                     ref={(el) => (inputRefs.current[index] = el)}

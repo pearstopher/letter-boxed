@@ -1,6 +1,6 @@
 import './App.css'
 import { Grid } from './Grid.jsx'
-import { Letters } from './Letters.jsx'
+import { Validate } from './Validate.jsx'
 import { useState } from 'react'
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
                 doSearch={doSearch}
                 setDoSearch={setDoSearch}
             />
-            <Letters inputs={inputs} setDoSearch={setDoSearch} />
+            <Validate inputs={inputs} setDoSearch={setDoSearch} />
         </div>
     )
 }
