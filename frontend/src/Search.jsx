@@ -28,8 +28,12 @@ function useStateCallback(initialState) {
 }
 
 export const Search = forwardRef(function Search(props, ref) {
-    const [data, setData] = useStateCallback(null)
+    const [data, setData] = useState(null)
     const [error, setError] = useState(null)
+
+    const [loaded, setLoaded] = useState(false)
+    const [optimized, setOptimized] = useState(false)
+    const [sorted, setSorted] = useState(false)
 
     const fetchData = async () => {
         try {
@@ -48,10 +52,11 @@ export const Search = forwardRef(function Search(props, ref) {
             resultMessage[0] = newMessage
             props.setResultMessage(resultMessage)
 
-            console.log(resultMessage)
-            console.log(props.resultMessage)
+            //console.log(resultMessage)
+            //console.log(props.resultMessage)
 
-            setData(result, (s) => removeExtraWords(s))
+            setLoaded(true)
+            setData(result)
 
             //let resultMessage = [].concat(props.resultMessage, [newMessage])
             //props.setResultMessage((props.resultMessage) => [...props.resultMessage, newMessage])
@@ -79,7 +84,7 @@ export const Search = forwardRef(function Search(props, ref) {
                     pairs.push(group[j] + group[i])
                 }
             }
-            console.log(pairs)
+            //console.log(pairs)
             return pairs
         }
         const groups = [
@@ -90,9 +95,11 @@ export const Search = forwardRef(function Search(props, ref) {
         ]
         const pairs = groups.flatMap((group) => generatePairs(group))
 
-        const goodWords = s.filter((word) => !badWord(word, badLetters, pairs))
-        console.log(goodWords)
-        setData(goodWords, (s) => console.log(goodWords))
+        const goodWords = data.filter(
+            (word) => !badWord(word, badLetters, pairs)
+        )
+        setOptimized(true)
+        setData(goodWords)
         const newMessage = 'Optimizing list... (' + goodWords.length + ' items)'
         //let resultMessage = [...props.resultMessage, newMessage]
         //let resultMessage = [].concat(props.resultMessage, [newMessage])
@@ -138,16 +145,44 @@ export const Search = forwardRef(function Search(props, ref) {
         return pairs.some((pair) => word.includes(pair))
     }
 
-    useEffect(() => {
-        if (props.doSearch) {
-            //console.log(props.inputs)
-
-            fetchData()
-            props.setDoSearch(false)
-        } else {
-            //setData(null)
+    const sortWords = (s) => {
+        function countUniqueLetters(word) {
+            const uniqueLetters = new Set(word)
+            return uniqueLetters.size
         }
-    }, [props.doSearch, props.resultMessage])
+        const sortedList = data.sort(
+            (a, b) => countUniqueLetters(a) - countUniqueLetters(b)
+        )
+        setSorted(true)
+        console.log(sortedList)
+        setData(sortedList)
+
+        const newMessage = 'Sorting list...'
+        let resultMessage = props.resultMessage
+        resultMessage[2] = newMessage
+
+        props.setResultMessage(resultMessage)
+    }
+
+    useEffect(() => {
+        if (!loaded && !optimized && !sorted) {
+            if (props.doSearch) {
+                fetchData()
+                props.setDoSearch(false)
+            } else {
+                //setData(null)
+            }
+        } else if (loaded && !optimized && !sorted) {
+            console.log('removing extra words')
+            removeExtraWords()
+        } else if (loaded && optimized && !sorted) {
+            console.log('sorting')
+            sortWords()
+        } else if (loaded && optimized && sorted) {
+            console.log('sorted')
+            console.log(data)
+        }
+    }, [props.doSearch, props.resultMessage, data])
 
     return (
         <div>
