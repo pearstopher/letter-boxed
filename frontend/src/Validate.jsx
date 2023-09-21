@@ -33,6 +33,13 @@ export const Validate = forwardRef(function Letters(props, ref) {
         }
     }, [props.inputs, noDuplicates, noBadCharacters])
 
+    function enterKey(e) {
+        if (e.key === 'Enter' && noDuplicates && noBadCharacters) {
+            props.setDoSearch(true)
+        }
+    }
+    document.addEventListener('keydown', enterKey)
+
     return (
         <div className="submit-wrapper">
             <div className="letters-container">
