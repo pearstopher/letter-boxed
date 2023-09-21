@@ -23,6 +23,10 @@
 #middle {
   background: hotpink;
   padding: 20px;
+  font-size: 75%;
+}
+#middle span {
+  display: block;
 }
 #grid-item-1 {
   grid-area: 1 / 2 / 2 / 3;
