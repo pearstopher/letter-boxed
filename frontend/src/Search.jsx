@@ -154,13 +154,11 @@ export const Search = forwardRef(function Search(props, ref) {
             (a, b) => countUniqueLetters(a) - countUniqueLetters(b)
         )
         setSorted(true)
-        console.log(sortedList)
-        setData(sortedList)
+        setData([...sortedList]) // it doesn't know the state gets updated unless I do this
 
         const newMessage = 'Sorting list...'
         let resultMessage = props.resultMessage
         resultMessage[2] = newMessage
-
         props.setResultMessage(resultMessage)
     }
 
@@ -182,7 +180,7 @@ export const Search = forwardRef(function Search(props, ref) {
             console.log('sorted')
             console.log(data)
         }
-    }, [props.doSearch, props.resultMessage, data])
+    }, [props.doSearch, data])
 
     return (
         <div>
