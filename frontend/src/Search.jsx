@@ -28,7 +28,7 @@ function useStateCallback(initialState) {
 }
 
 export const Search = forwardRef(function Search(props, ref) {
-    const [data, setData] = useStateCallback(null)
+    const [data, setData] = useStateCallback({})
     const [error, setError] = useState(null)
     const [resultMessage, setResultMessage] = useState([])
 
@@ -38,7 +38,8 @@ export const Search = forwardRef(function Search(props, ref) {
                 'https://raw.githubusercontent.com/dwyl/english-words/master/words_dictionary.json'
             )
             const result = await response.json()
-            setData(result, () => console.log(data))
+            const allWords = Object.keys(result)
+            setData(allWords, () => removeExtraWords())
             const newMessage =
                 'Loaded dictionary list... (' +
                 Object.keys(result).length +
@@ -53,8 +54,7 @@ export const Search = forwardRef(function Search(props, ref) {
         console.log(data)
         const goodWords = data.filter((word) => !badWord(word))
         setData(goodWords)
-        const newMessage =
-            'Optimizing list... (' + Object.keys(goodWords).length + ' items)'
+        const newMessage = 'Optimizing list... (' + goodWords.length + ' items)'
         setResultMessage((resultMessage) => [...resultMessage, newMessage])
     }
     const badWord = (word) => {
@@ -91,7 +91,7 @@ export const Search = forwardRef(function Search(props, ref) {
             fetchData()
             props.setDoSearch(false)
         } else {
-            setData(null)
+            //setData(null)
         }
     }, [props.doSearch])
 
