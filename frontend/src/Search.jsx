@@ -35,6 +35,7 @@ export const Search = forwardRef(function Search(props, ref) {
     const [loaded, setLoaded] = useState(false)
     const [optimized, setOptimized] = useState(false)
     const [sorted, setSorted] = useState(false)
+    const [done, setDone] = useState(false)
 
     const fetchData = async () => {
         try {
@@ -85,7 +86,7 @@ export const Search = forwardRef(function Search(props, ref) {
                     pairs.push(group[j] + group[i])
                 }
             }
-            //console.log(pairs)
+            console.log(pairs)
             return pairs
         }
         const groups = [
@@ -164,17 +165,31 @@ export const Search = forwardRef(function Search(props, ref) {
     }
 
     const solve = () => {
+        let messageIndex = 3
         for (let i = 0; i < data.length; i++) {
             for (let j = i + 1; j < data.length; j++) {
                 if (data[i].slice(-1) === data[j][0]) {
                     const letterArray = (data[i] + data[j]).split('')
                     const set = new Set(letterArray)
                     if (set.size === 12) {
-                        console.log(data[i] + '-' + data[j])
+                        const solution = data[i] + '-' + data[j]
+                        console.log(solution)
+                        const newMessage = solution
+                        let resultMessage = props.resultMessage
+                        resultMessage[messageIndex] = newMessage
+                        messageIndex++
+
+                        props.setResultMessage([...resultMessage])
                     }
                 }
             }
         }
+        const newMessage = 'Found ' + (messageIndex - 3) + ' solutions!'
+        let resultMessage = props.resultMessage
+        resultMessage[messageIndex] = newMessage
+
+        props.setResultMessage([...resultMessage])
+        setDone(true)
     }
 
     useEffect(() => {
@@ -191,11 +206,13 @@ export const Search = forwardRef(function Search(props, ref) {
         } else if (loaded && optimized && !sorted) {
             console.log('sorting')
             sortWords()
-        } else if (loaded && optimized && sorted) {
+        } else if (loaded && optimized && sorted && !done) {
             console.log('building solutions')
             solve()
+        } else if (done) {
+            console.log('done')
         }
-    }, [props.doSearch, data])
+    }, [props.doSearch, data, done])
 
     return (
         <div>
