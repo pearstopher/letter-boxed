@@ -51,23 +51,25 @@ export const Search = forwardRef(function Search(props, ref) {
     }
 
     const removeExtraWords = (s) => {
-        const goodWords = s.filter((word) => !badWord(word))
+        // make a list of the letters that can't be in any of the words
+        const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
+        const lettersToRemove = props.inputs.map((letter) =>
+            letter.toLowerCase()
+        )
+        const badLetters = alphabet.filter(
+            (letter) => !lettersToRemove.includes(letter)
+        )
+
+        const goodWords = s.filter((word) => !badWord(word, badLetters))
         console.log(goodWords)
         setData(goodWords, (s) => console.log(goodWords))
         const newMessage = 'Optimizing list... (' + goodWords.length + ' items)'
         setResultMessage((resultMessage) => [...resultMessage, newMessage])
     }
-    const badWord = (word) => {
+    const badWord = (word, badLetters) => {
         let bad = false
 
-        // reject any word with that contains a letter thats not on the board
-        const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
-        const lettersToRemove = props.inputs.map((letter) =>
-            letter.toLowerCase()
-        ) // Example list of letters to remove
-        const badLetters = alphabet.filter(
-            (letter) => !lettersToRemove.includes(letter)
-        )
+        // reject any word with that contains a letter that's not on the board
         if (badLetters.some((letter) => word.includes(letter))) {
             bad = true
         }
@@ -78,13 +80,19 @@ export const Search = forwardRef(function Search(props, ref) {
         }
 
         // reject any word that has any consecutive letters (could preprocess this and make my own dictionary)
-        const letterArray = word.split('')
-        const set = new Set(letterArray)
-        if (set.size !== letterArray.length) {
+        //const letterArray = word.split('')
+        //const set = new Set(letterArray)
+        //if (set.size !== letterArray.length) {
+        //    bad = true
+        //}
+        if (hasConsecutiveDuplicates(word)) {
             bad = true
         }
 
         return bad
+    }
+    function hasConsecutiveDuplicates(word) {
+        return /(\w)\1/.test(word)
     }
 
     useEffect(() => {
