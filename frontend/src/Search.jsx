@@ -3,14 +3,22 @@ import React, { forwardRef, useEffect, useState, useRef } from 'react'
 export const Search = forwardRef(function Search(props, ref) {
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
-
-    console.log(props.inputs)
+    const [resultMessage, setResultMessage] = useState('')
 
     const fetchData = async () => {
         try {
-            const response = await fetch('https://catfact.ninja/fact')
+            const response = await fetch(
+                'https://raw.githubusercontent.com/dwyl/english-words/master/words_dictionary.json'
+            )
             const result = await response.json()
             setData(result)
+            //console.log(JSON.parse(result))
+            setResultMessage(
+                resultMessage +
+                    'Loaded dictionary list... (' +
+                    result.length +
+                    ' items)'
+            )
         } catch (error) {
             setError(error)
         }
@@ -18,7 +26,10 @@ export const Search = forwardRef(function Search(props, ref) {
 
     useEffect(() => {
         if (props.doSearch) {
+            console.log(props.inputs)
+
             fetchData()
+            props.setDoSearch(false)
         } else {
             setData(null)
         }
@@ -26,7 +37,7 @@ export const Search = forwardRef(function Search(props, ref) {
 
     return (
         <div>
-            {data && <div>{data.fact}</div>}
+            {data && <div>{resultMessage}</div>}
             {error && <div>Error: {error.message}</div>}
         </div>
     )

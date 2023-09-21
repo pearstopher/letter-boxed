@@ -18,7 +18,11 @@ export const Grid = forwardRef(function Grid(
                 ></div>
             ))}
             <div key={0} id={'middle'}>
-                <Search doSearch={doSearch} inputs={inputs} />
+                <Search
+                    doSearch={doSearch}
+                    setDoSearch={setDoSearch}
+                    inputs={inputs}
+                />
             </div>
             <div key={13} id={'refresh'}>
                 <Refresh setInputs={setInputs} setDoSearch={setDoSearch} />
