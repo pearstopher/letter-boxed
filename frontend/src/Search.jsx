@@ -35,11 +35,12 @@ export const Search = forwardRef(function Search(props, ref) {
     const fetchData = async () => {
         try {
             const response = await fetch(
-                'https://raw.githubusercontent.com/dwyl/english-words/master/words_dictionary.json'
+                //'https://raw.githubusercontent.com/dwyl/english-words/master/words_dictionary.json'
+                'https://raw.githubusercontent.com/benjamincrom/scrabble/master/scrabble/dictionary.json'
             )
             const result = await response.json()
-            const allWords = Object.keys(result)
-            setData(allWords, (s) => removeExtraWords(s))
+            //const allWords = Object.keys(result)
+            setData(result, (s) => removeExtraWords(s))
             const newMessage =
                 'Loaded dictionary list... (' +
                 Object.keys(result).length +
