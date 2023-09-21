@@ -30,6 +30,7 @@ function useStateCallback(initialState) {
 export const Search = forwardRef(function Search(props, ref) {
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
+    const [solutions, setSolutions] = useState([])
 
     const [loaded, setLoaded] = useState(false)
     const [optimized, setOptimized] = useState(false)
@@ -151,7 +152,7 @@ export const Search = forwardRef(function Search(props, ref) {
             return uniqueLetters.size
         }
         const sortedList = data.sort(
-            (a, b) => countUniqueLetters(a) - countUniqueLetters(b)
+            (a, b) => countUniqueLetters(b) - countUniqueLetters(a)
         )
         setSorted(true)
         setData([...sortedList]) // it doesn't know the state gets updated unless I do this
@@ -160,6 +161,20 @@ export const Search = forwardRef(function Search(props, ref) {
         let resultMessage = props.resultMessage
         resultMessage[2] = newMessage
         props.setResultMessage(resultMessage)
+    }
+
+    const solve = () => {
+        for (let i = 0; i < data.length; i++) {
+            for (let j = i + 1; j < data.length; j++) {
+                if (data[i].slice(-1) === data[j][0]) {
+                    const letterArray = (data[i] + data[j]).split('')
+                    const set = new Set(letterArray)
+                    if (set.size === 12) {
+                        console.log(data[i] + '-' + data[j])
+                    }
+                }
+            }
+        }
     }
 
     useEffect(() => {
@@ -177,8 +192,8 @@ export const Search = forwardRef(function Search(props, ref) {
             console.log('sorting')
             sortWords()
         } else if (loaded && optimized && sorted) {
-            console.log('sorted')
-            console.log(data)
+            console.log('building solutions')
+            solve()
         }
     }, [props.doSearch, data])
 
