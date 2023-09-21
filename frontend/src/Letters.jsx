@@ -30,7 +30,7 @@ export const Letters = forwardRef(function Letters(props, ref) {
         } else {
             setMessage('')
         }
-    })
+    }, [props.inputs, noDuplicates, noBadCharacters])
 
     return (
         <div className="submit-wrapper">

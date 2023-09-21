@@ -14,6 +14,9 @@ export const Grid = forwardRef(function Grid({ inputs, setInputs }, ref) {
                 ></div>
             ))}
             <div key={0} id={'middle'}></div>
+            <div key={13} id={'refresh'}>
+                <Refresh setInputs={setInputs} />
+            </div>
 
             <TextBoxes inputs={inputs} setInputs={setInputs} ref={gridRefs} />
         </div>
@@ -25,8 +28,6 @@ export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
     const inputRefs = useRef([])
 
     const handleChange = (index, value) => {
-        console.log({ index, value })
-        console.log(inputRefs)
         if (value.match(/[a-zA-Z]/) || value === '') {
             props.setInputs((prevInputs) => {
                 const newInputs = [...prevInputs]
@@ -77,5 +78,17 @@ export const TextBoxes = forwardRef(function TextBoxes(props, ref) {
                 />
             ))}
         </div>
+    )
+})
+
+export const Refresh = forwardRef(function Refresh(props, ref) {
+    const resetInputs = () => {
+        props.setInputs(Array(12).fill(''))
+    }
+
+    return (
+        <span>
+            <a onClick={(e) => resetInputs()}>Reset</a>
+        </span>
     )
 })
