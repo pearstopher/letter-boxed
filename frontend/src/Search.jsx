@@ -28,7 +28,7 @@ function useStateCallback(initialState) {
 }
 
 export const Search = forwardRef(function Search(props, ref) {
-    const [data, setData] = useStateCallback({})
+    const [data, setData] = useStateCallback(null)
     const [error, setError] = useState(null)
     const [resultMessage, setResultMessage] = useState([])
 
@@ -39,7 +39,7 @@ export const Search = forwardRef(function Search(props, ref) {
             )
             const result = await response.json()
             const allWords = Object.keys(result)
-            setData(allWords, () => removeExtraWords())
+            setData(allWords.slice(1, 1000), (s) => removeExtraWords(s))
             const newMessage =
                 'Loaded dictionary list... (' +
                 Object.keys(result).length +
@@ -50,10 +50,11 @@ export const Search = forwardRef(function Search(props, ref) {
         }
     }
 
-    const removeExtraWords = () => {
-        console.log(data)
-        const goodWords = data.filter((word) => !badWord(word))
-        setData(goodWords)
+    const removeExtraWords = (s) => {
+        const goodWords = s.filter((word) => !badWord(word))
+        console.log(s)
+        return
+        setData(goodWords, (s) => console.log(s))
         const newMessage = 'Optimizing list... (' + goodWords.length + ' items)'
         setResultMessage((resultMessage) => [...resultMessage, newMessage])
     }
@@ -62,7 +63,9 @@ export const Search = forwardRef(function Search(props, ref) {
 
         // reject any word with that contains a letter thats not on the board
         const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
-        const lettersToRemove = props.inputs // Example list of letters to remove
+        const lettersToRemove = props.inputs.map((letter) =>
+            letter.toLowerCase()
+        ) // Example list of letters to remove
         const badLetters = alphabet.filter(
             (letter) => !lettersToRemove.includes(letter)
         )
@@ -81,12 +84,15 @@ export const Search = forwardRef(function Search(props, ref) {
         if (set.size !== letterArray.length) {
             bad = true
         }
+
+        console.log(badLetters)
+        console.log(lettersToRemove)
         return bad
     }
 
     useEffect(() => {
         if (props.doSearch) {
-            console.log(props.inputs)
+            //console.log(props.inputs)
 
             fetchData()
             props.setDoSearch(false)
