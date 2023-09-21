@@ -5,11 +5,17 @@ import { useState } from 'react'
 
 function App() {
     const [inputs, setInputs] = useState(Array(12).fill(''))
+    const [doSearch, setDoSearch] = useState(false)
 
     return (
         <div className="app-container">
-            <Grid inputs={inputs} setInputs={setInputs} />
-            <Letters inputs={inputs} />
+            <Grid
+                inputs={inputs}
+                setInputs={setInputs}
+                doSearch={doSearch}
+                setDoSearch={setDoSearch}
+            />
+            <Letters inputs={inputs} setDoSearch={setDoSearch} />
         </div>
     )
 }

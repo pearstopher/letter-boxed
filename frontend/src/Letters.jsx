@@ -1,4 +1,5 @@
 import React, { forwardRef, useEffect, useState, useRef } from 'react'
+import { Search } from './Search.jsx'
 
 export const Letters = forwardRef(function Letters(props, ref) {
     const [letters, setLetters] = useState(
@@ -50,7 +51,12 @@ export const Letters = forwardRef(function Letters(props, ref) {
             </div>
             <div className="submit-container">
                 {noDuplicates && noBadCharacters ? (
-                    <span className={'button'}>Search</span>
+                    <span
+                        className={'button'}
+                        onClick={(e) => props.setDoSearch(true)}
+                    >
+                        Search
+                    </span>
                 ) : (
                     <span className={'button grey'}>Search</span>
                 )}
