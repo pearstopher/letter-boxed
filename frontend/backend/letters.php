@@ -6,6 +6,8 @@ this script pulls the current Letter Boxed puzzle from the NYT,
 */
 
 header('Content-Type: application/json; charset=utf-8');
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
 
 $url = "https://www.nytimes.com/puzzles/letter-boxed";
 
