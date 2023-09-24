@@ -16,11 +16,15 @@
 .grid-item {
   background-color: deeppink;
   border: 0px;
+  aspect-ratio: 1;
 }
 #middle {
   background: hotpink;
   padding: 20px;
   font-size: 75%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  aspect-ratio: 1;
 }
 #middle span {
   display: block;
