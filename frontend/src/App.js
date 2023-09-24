@@ -3,8 +3,6 @@ import { Grid } from './Grid.jsx'
 import { Validate } from './Validate.jsx'
 import { useState } from 'react'
 
-console.log(process.env.REACT_APP_LETTERS_URL)
-console.log(process.env)
 function App() {
     const [inputs, setInputs] = useState(Array(12).fill(''))
     const [doSearch, setDoSearch] = useState(false)
