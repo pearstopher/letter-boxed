@@ -209,10 +209,15 @@ export const Search = forwardRef(function Search(props, ref) {
         } else if (loaded && optimized && sorted && !done) {
             console.log('building solutions')
             solve()
+            setLoaded(false)
+            setOptimized(false)
+            setSorted(false)
+            setDone(false)
         } else if (done) {
             console.log('done')
+            // skipping 'done' phase for now
         }
-    }, [props.doSearch, data, done])
+    }, [props.doSearch, data])
 
     return (
         <div>
