@@ -145,5 +145,5 @@ export const Load = forwardRef(function Load(props, ref) {
         }
     }
 
-    return <a onClick={(e) => loadLetters()}>Load NYT</a>
+    return <a onClick={(e) => loadLetters()}>Load Today's Letters</a>
 })
