@@ -9,6 +9,17 @@ header('Content-Type: application/json; charset=utf-8');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
+// Set the time for expiration
+$expirationTime = strtotime('tomorrow midnight');
+
+// Calculate the expiration date
+$expirationDate = date('D, d M Y H:i:s', $expirationTime) . ' GMT';
+
+// Set the headers
+header('Cache-Control: max-age=' . ($expirationTime - time()));
+header('Expires: ' . $expirationDate);
+
+
 $url = "https://www.nytimes.com/puzzles/letter-boxed";
 
 // Initialize cURL session
