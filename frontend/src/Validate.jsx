@@ -58,14 +58,14 @@ export const Validate = forwardRef(function Letters(props, ref) {
             </div>
             <div className="submit-container">
                 {noDuplicates && noBadCharacters ? (
-                    <span
+                    <a
                         className={'button'}
                         onClick={(e) => props.setDoSearch(true)}
                     >
                         Search
-                    </span>
+                    </a>
                 ) : (
-                    <span className={'button grey'}>Search</span>
+                    <a className={'button grey'}>Search</a>
                 )}
             </div>
         </div>
