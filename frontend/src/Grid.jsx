@@ -41,7 +41,11 @@ export const Grid = forwardRef(function Grid(
                 />
             </div>
             <div key={14} id={'load'}>
-                <Load setInputs={setInputs} />
+                <Load
+                    setInputs={setInputs}
+                    setDoSearch={setDoSearch}
+                    setResultMessage={setResultMessage}
+                />
             </div>
 
             <TextBoxes inputs={inputs} setInputs={setInputs} ref={gridRefs} />
@@ -122,7 +126,14 @@ export const Refresh = forwardRef(function Refresh(props, ref) {
 })
 
 export const Load = forwardRef(function Load(props, ref) {
+    const resetInputs = () => {
+        props.setInputs(Array(12).fill(''))
+        props.setDoSearch(false)
+        props.setResultMessage([])
+    }
     const loadLetters = async () => {
+        resetInputs()
+
         const url = process.env.REACT_APP_LETTERS_URL
 
         try {
